@@ -13,6 +13,10 @@ dependencies:
   http: ^1.1.0
   dash_chat_2: ^0.0.20
   get: ^4.6.6
+  chat_gpt_sdk: 3.0.9
+  win32: ^5.5.1
+  file_picker: ^8.0.5
+
   
 dev_dependencies:
 

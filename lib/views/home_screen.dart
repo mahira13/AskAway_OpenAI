@@ -20,6 +20,9 @@ class HomeScreen extends GetView<HomeScreenController> {
             style: TextStyle(color: bodyTextColor),
           )),
       body: Obx(() => DashChat(
+            inputOptions: InputOptions(
+              trailing: controller.listWidgets,
+            ),
             currentUser: controller.user,
             messageOptions: const MessageOptions(
               currentUserContainerColor: Colors.black,
@@ -27,10 +30,14 @@ class HomeScreen extends GetView<HomeScreenController> {
               textColor: bodyTextColor,
             ),
             onSend: (ChatMessage prompt) async {
-              String? errorMessage = await OpenaiApiService().request(prompt);
-              if (errorMessage != null && errorMessage.isNotEmpty) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(errorMessage)));
+              if (controller.uploadedFileId == null) {
+                String? errorMessage = await OpenaiApiService().request(prompt);
+                if (errorMessage != null && errorMessage.isNotEmpty) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(errorMessage)));
+                }
+              } else {
+                OpenaiApiService().createThreadAndRun(prompt);
               }
             },
             messages: controller.messages.value,
